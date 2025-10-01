@@ -23,12 +23,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link href="/favicon.ico" rel="icon" sizes="any" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
         <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange enableSystem>
           <TanstackProvider>
             <AuthProvider>
               <ToasterProvider>
-                {/* <Navbar /> */}
+                <Navbar />
                 <main>{children}</main>
                 {/* <Footer /> */}
               </ToasterProvider>

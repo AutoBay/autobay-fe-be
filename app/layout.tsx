@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <TanstackProvider>
             <AuthProvider>
               <ToasterProvider>
-                <Navbar />
+                {/* <Navbar /> */}
                 <main>{children}</main>
                 {/* <Footer /> */}
               </ToasterProvider>

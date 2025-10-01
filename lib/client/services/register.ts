@@ -14,7 +14,7 @@ const registerUser = async (values: RegisterValues) => {
     if (!r.ok) {
       throw new Error(data?.message || r.statusText);
     }
-
+    console.log(data)
     return data;
   } catch (err) {
     if (err instanceof Error) {

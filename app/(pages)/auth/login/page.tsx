@@ -6,6 +6,7 @@ import { signInWithPopup } from "firebase/auth";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
@@ -14,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ButtonWithLoading from "@/custom-components/button-with-loading-state/ButtonWithLoading";
-import { clientConfig, fireBaseClientAuth, googleProvider } from "@/lib/client/client-config";
+import { clientConfig, fireBaseClientAuth, firebaseClientApp, googleProvider } from "@/lib/client/client-config";
 import type { LoginValues } from "@/lib/client/client-definitions";
 import { clientFeatureFlagsConfig } from "@/lib/client/client-feature-flags";
 import { loginSchema } from "@/lib/client/schemas/login-schema";
@@ -47,9 +48,19 @@ export default function LoginPage() {
   const handleGoogleRegister = async () => {
     const r = await signInWithPopup(fireBaseClientAuth, googleProvider);
     if (r.user.email) {
-      router.push("/dashboard");
+      console.log(r.user);
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = fireBaseClientAuth.onAuthStateChanged((user) => {
+      if (user) {
+        console.log(user);
+        router.push("/dashboard");
+      }
+    });
+    return () => unsubscribe();
+  });
 
   return (
     <div className="grid min-h-svh lg:grid-cols-2">

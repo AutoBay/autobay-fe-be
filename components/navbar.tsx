@@ -1,3 +1,5 @@
+'use client'
+
 import { Book, Menu, Sunset, Trees, Zap } from "lucide-react";
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -11,6 +13,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import { clientConfig } from "@/lib/client/client-config";
 import { AnimatedThemeToggler } from "./ui/animated-theme-toggler";
 
 type MenuItem = {
@@ -120,8 +123,8 @@ const Navbar = ({
     },
   ],
   auth = {
-    login: { title: "Login", url: "#" },
-    signup: { title: "Register", url: "#" },
+    login: { title: "Login", url: `${clientConfig.platform.baseUrl}/auth/login` },
+    signup: { title: "Register", url: `${clientConfig.platform.baseUrl}/auth/register` },
   },
 }: NavbarProps) => {
   return (

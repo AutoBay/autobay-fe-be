@@ -1,5 +1,5 @@
 "use client";
-import { useTheme } from "@/app/providers/theme-provider";
+import { useTheme } from "next-themes";
 import styles from "./Loader.module.css";
 
 const Loader = () => {

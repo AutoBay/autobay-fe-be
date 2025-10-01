@@ -2,6 +2,7 @@ name: AWS ECR Push
 
 on:
   push:
+    #only on main branch
     branches: ["main"]
     tags: ["*"]
 

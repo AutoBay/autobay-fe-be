@@ -1,5 +1,5 @@
-const Page = () => {
+const SubscriptionPage = () => {
   return <div>subscription</div>;
 };
 
-export default Page;
+export default SubscriptionPage;

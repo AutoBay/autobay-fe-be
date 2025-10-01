@@ -1,5 +1,5 @@
-const Page = () => {
+const SystemPreferencesPage = () => {
   return <div>system-preferences</div>;
 };
 
-export default Page;
+export default SystemPreferencesPage;

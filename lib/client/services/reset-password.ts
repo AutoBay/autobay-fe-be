@@ -1,0 +1,26 @@
+import { clientConfig } from "../client-config";
+
+const resetPw = async ({ email, password }: { email: string; password: string; }) => {
+  try {
+    const r = await fetch(clientConfig.platform.resetPasswordUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await r.json();
+
+    if (!r.ok) {
+      throw new Error(data?.message || r.statusText);
+    }
+    console.log(data);
+    return data;
+  } catch (err) {
+    if (err instanceof Error) {
+      throw err;
+    }
+    throw new Error(String(err));
+  }
+};
+
+export default resetPw;

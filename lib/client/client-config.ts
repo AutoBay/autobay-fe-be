@@ -14,7 +14,7 @@ export const clientConfig = {
     registerUrl: `${baseUrl}/api/auth/register`,
     // loginUrl: `${baseUrl}/api/auth/login`,
     logoutUrl: `${baseUrl}/api/auth/logout`,
-    forgotPasswordUrl: `${baseUrl}/api/auth/forgot-password`,
+    forgotPasswordUrl: `${baseUrl}/api/auth/forget-password`,
     resetPasswordUrl: `${baseUrl}/api/auth/reset-password`,
   },
   firebase: {

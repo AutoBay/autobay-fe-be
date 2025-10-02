@@ -32,7 +32,7 @@ export default function RegisterPage() {
       router.push("/dashboard");
     },
     onError: (e) => {
-      toast.error(e instanceof Error ? e.message : String(e));
+      console.error(e)
     },
   });
 
@@ -54,7 +54,19 @@ export default function RegisterPage() {
       form.setError("confirmPassword", { message: "Passwords do not match" });
       return;
     }
-    await regRegisterMutation(values);
+
+    try {
+      await regRegisterMutation(values);
+      toast.success("Account Created");
+      router.push("/dashboard");
+      form.reset();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("Something went wrong");
+      }
+    }
   };
 
   const handleGoogleRegister = async () => {

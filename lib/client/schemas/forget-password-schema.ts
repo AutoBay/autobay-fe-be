@@ -1,5 +1,6 @@
 import z from "zod";
+import { emailSchema } from "./email-schema";
 
 export const forgetPasswordSchema = z.object({
-  email: z.email().min(1, { error: "Email is required" }),
+  email: emailSchema.shape.email,
 });

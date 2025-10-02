@@ -27,11 +27,8 @@ export default function LoginPage() {
 
   const { isPending, mutateAsync: loginMutate } = useMutation({
     mutationFn: async (values: LoginValues) => loginUser(values),
-    onSuccess: async () => {
-      router.push("/dashboard");
-    },
     onError: (e) => {
-      toast.error(e instanceof Error ? e.message : String(e));
+      console.error(e)
     },
   });
 
@@ -42,13 +39,27 @@ export default function LoginPage() {
   });
 
   const onSubmit = async (values: LoginValues) => {
-    await loginMutate(values);
+    try {
+      await loginMutate(values);
+      router.push("/dashboard");
+      return;
+    } catch (error) {
+      toast.error((error as Error).message);
+      return;
+    }
   };
 
   const handleGoogleRegister = async () => {
-    const r = await signInWithPopup(fireBaseClientAuth, googleProvider);
-    if (r.user.email) {
-      console.log(r.user);
+    try {
+      const r = await signInWithPopup(fireBaseClientAuth, googleProvider);
+      if (r.user.email) {
+        console.log(r.user);
+      }
+      router.push("/dashboard");
+      return;
+    } catch (error) {
+      toast.error((error as Error).message);
+      return;
     }
   };
 

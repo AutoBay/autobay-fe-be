@@ -1,6 +1,9 @@
 import z from "zod";
+import { emailSchema } from "./email-schema";
+import { passwordSchema } from "./password-schema";
 
 export const resetPasswordSchema = z.object({
-  password: z.string().min(1, { error: "Password is required" }),
-  confirmPassword: z.string().min(1, { error: "Confirm password is required" }),
+  email: emailSchema.shape.email,
+  confirmPassword: passwordSchema.shape.password,
+  password: passwordSchema.shape.password,
 });

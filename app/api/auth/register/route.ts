@@ -9,7 +9,7 @@ export async function POST(request: Request, _res: NextResponse) {
 
     // Basic guard (prevents Admin call with empty values)
     if (!(email && password)) {
-      return NextResponse.json({ status: ResponseStatus.BAD_REQUEST, message: "Missing required fields" }, { status: 400 });
+      return NextResponse.json({ message: "Missing required fields" }, { status: ResponseStatus.BAD_REQUEST });
     }
 
     const user = await adminRole.createUser({
@@ -25,6 +25,6 @@ export async function POST(request: Request, _res: NextResponse) {
       return NextResponse.json({ data: user }, { status: ResponseStatus.SUCCESS });
     }
   } catch (error) {
-    return NextResponse.json(null, { status: ResponseStatus.INTERNAL_ERROR, statusText: (error as Error).message });
+    return NextResponse.json({ message: (error as Error).message }, { status: ResponseStatus.INTERNAL_ERROR });
   }
 }

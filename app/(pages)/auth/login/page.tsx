@@ -28,7 +28,7 @@ export default function LoginPage() {
   const { isPending, mutateAsync: loginMutate } = useMutation({
     mutationFn: async (values: LoginValues) => loginUser(values),
     onError: (e) => {
-      console.error(e)
+      console.error(e);
     },
   });
 

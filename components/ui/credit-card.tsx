@@ -65,15 +65,15 @@ const cardBackStyles: Record<CardStyle, string> = {
   metal: "bg-gradient-to-br from-slate-700 via-slate-600 to-slate-800 border-slate-500 text-white",
 };
 
-export interface CreditCardValue {
+export type CreditCardValue = {
   cardholderName: string;
   cardNumber: string;
   expiryMonth: string;
   expiryYear: string;
   cvv: string;
-}
+};
 
-export interface CreditCardProps {
+export type CreditCardProps = {
   value?: CreditCardValue;
   onChange?: (value: CreditCardValue) => void;
   onValidationChange?: (isValid: boolean, errors: ValidationErrors) => void;
@@ -82,29 +82,29 @@ export interface CreditCardProps {
   cvvLabel?: "CCV" | "CVC";
   cardStyle?: CardStyle;
   showVendor?: boolean;
-}
+};
 
-export interface CreditCardRef {
+export type CreditCardRef = {
   validate: () => boolean;
   isValid: () => boolean;
   focus: () => void;
   reset: () => void;
   getErrors: () => ValidationErrors;
-}
+};
 
-interface ValidationErrors {
+type ValidationErrors = {
   cardholderName?: string;
   cardNumber?: string;
   expiryMonth?: string;
   expiryYear?: string;
   cvv?: string;
   general?: string;
-}
+};
 
 const formatCardNumber = (value: string) => {
   const v = value.replace(/\s+/g, "").replace(/[^0-9]/gi, "");
   const matches = v.match(/\d{4,16}/g);
-  const match = (matches && matches[0]) || "";
+  const match = matches?.[0] || "";
   const parts: string[] = [];
 
   for (let i = 0, len = match.length; i < len; i += 4) {
@@ -121,18 +121,22 @@ const getCardType = (number: string): keyof typeof CardIcons => {
   const cleanNumber = number.replace(/\s/g, "");
 
   // Visa: starts with 4
-  if (cleanNumber.startsWith("4")) return "visa";
+  if (cleanNumber.startsWith("4")) {
+    return "visa";
+  }
 
   // Mastercard: starts with 5 or 2221-2720
   if (
     cleanNumber.startsWith("5") ||
-    (cleanNumber.startsWith("2") && Number.parseInt(cleanNumber.substring(0, 4)) >= 2221 && Number.parseInt(cleanNumber.substring(0, 4)) <= 2720)
+    (cleanNumber.startsWith("2") && Number.parseInt(cleanNumber.substring(0, 4), 10) >= 2221 && Number.parseInt(cleanNumber.substring(0, 4), 10) <= 2720)
   ) {
     return "mastercard";
   }
 
   // American Express: starts with 34 or 37
-  if (cleanNumber.startsWith("34") || cleanNumber.startsWith("37")) return "amex";
+  if (cleanNumber.startsWith("34") || cleanNumber.startsWith("37")) {
+    return "amex";
+  }
 
   // Discover: starts with 6011, 622126-622925, 644-649, 65
   if (
@@ -183,8 +187,8 @@ const validateCreditCard = (value: CreditCardValue, cvvLabel: string): Validatio
     const currentDate = new Date();
     const currentYear = currentDate.getFullYear();
     const currentMonth = currentDate.getMonth() + 1;
-    const expiryYear = Number.parseInt(value.expiryYear);
-    const expiryMonth = Number.parseInt(value.expiryMonth);
+    const expiryYear = Number.parseInt(value.expiryYear, 10);
+    const expiryMonth = Number.parseInt(value.expiryMonth, 10);
 
     if (expiryYear < currentYear || (expiryYear === currentYear && expiryMonth < currentMonth)) {
       errors.expiryYear = "Card has expired";
@@ -272,7 +276,9 @@ function CreditCard({ value, onChange, onValidationChange, className, ref, cvvLa
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!containerRef.current) return;
+    if (!containerRef.current) {
+      return;
+    }
     const rect = containerRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
@@ -331,7 +337,7 @@ function CreditCard({ value, onChange, onValidationChange, className, ref, cvvLa
         getErrors,
       };
     }
-  }, [ref, currentValue, errors, handleValidate, handleReset, getErrors]);
+  }, [ref, currentValue, handleValidate, handleReset, getErrors, cvvLabel, handleFocus]);
 
   const cardType = getCardType(currentValue.cardNumber);
   const currentYear = new Date().getFullYear();

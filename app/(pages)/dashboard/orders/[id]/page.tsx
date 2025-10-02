@@ -3,14 +3,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
-interface TimelineEvent {
+type TimelineEvent = {
   id: string;
   title: string;
   time: string;
   description?: string;
-}
+};
 
-interface TimelineActivity {
+type TimelineActivity = {
   id: string;
   user: {
     name: string;
@@ -29,15 +29,15 @@ interface TimelineActivity {
     label: string;
     variant: "default" | "secondary" | "destructive" | "outline";
   }>;
-}
+};
 
-interface BasicTimelineProps {
+type BasicTimelineProps = {
   events: TimelineEvent[];
-}
+};
 
-interface AdvancedTimelineProps {
+type AdvancedTimelineProps = {
   activities: TimelineActivity[];
-}
+};
 
 export function BasicTimeline({ events }: BasicTimelineProps) {
   return (
@@ -48,7 +48,7 @@ export function BasicTimeline({ events }: BasicTimelineProps) {
         <div className="absolute top-0 bottom-0 left-3 w-px bg-border" />
 
         <div className="space-y-8">
-          {events.map((event, index) => (
+          {events.map((event, _index) => (
             <div className="relative flex items-start gap-4" key={event.id}>
               {/* Timeline dot */}
               <div className="relative z-10 flex h-6 w-6 items-center justify-center">
@@ -79,7 +79,7 @@ export function AdvancedTimeline({ activities }: AdvancedTimelineProps) {
         <div className="absolute top-0 bottom-0 left-6 w-px bg-border" />
 
         <div className="space-y-6">
-          {activities.map((activity, index) => (
+          {activities.map((activity, _index) => (
             <div className="relative flex items-start gap-4" key={activity.id}>
               {/* Avatar */}
               <div className="relative z-10">

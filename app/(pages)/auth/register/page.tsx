@@ -32,7 +32,7 @@ export default function RegisterPage() {
       router.push("/dashboard");
     },
     onError: (e) => {
-      console.error(e)
+      console.error(e);
     },
   });
 

@@ -3,11 +3,7 @@
 import { getApps, initializeApp } from "firebase/app";
 import { GoogleAuthProvider, getAuth } from "firebase/auth";
 
-const baseUrl =
-  process.env.NEXT_PUBLIC_NODE_ENV === "production"
-    ? "https://mi23aibddp.eu-central-1.awsapprunner.com"
-    : "http://localhost:3000";
-
+const baseUrl = process.env.NEXT_PUBLIC_NODE_ENV === "production" ? "https://mi23aibddp.eu-central-1.awsapprunner.com" : "http://localhost:3000";
 
 export const clientConfig = {
   platform: {
@@ -16,6 +12,7 @@ export const clientConfig = {
     logoutUrl: `${baseUrl}/api/auth/logout`,
     forgotPasswordUrl: `${baseUrl}/api/auth/forget-password`,
     resetPasswordUrl: `${baseUrl}/api/auth/reset-password`,
+    contactUsUrl: `${baseUrl}/api/contact-us`,
   },
   firebase: {
     apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,

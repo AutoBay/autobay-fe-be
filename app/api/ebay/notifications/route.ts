@@ -12,10 +12,9 @@ export async function GET(req: NextRequest) {
   const challengeCode = req.nextUrl.searchParams.get("challenge_code");
   if (!challengeCode) {
     return NextResponse.json(
-      {},
+      { message: "missing challenge_code" },
       {
         status: ResponseStatus.BAD_REQUEST,
-        statusText: "missing challenge_code",
         headers: { "content-type": "application/json" },
       }
     );

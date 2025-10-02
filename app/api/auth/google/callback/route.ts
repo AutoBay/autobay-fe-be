@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
   const code = url.searchParams.get("code");
 
   if (!code) {
-    return NextResponse.json({ reason: "missing code" }, { status: ResponseStatus.BAD_REQUEST });
+    return NextResponse.json({ message: "missing code" }, { status: ResponseStatus.BAD_REQUEST });
   }
 
   let r: GetTokenResponse | null = null;

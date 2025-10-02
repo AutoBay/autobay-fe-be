@@ -9,6 +9,8 @@ import { featureFlags } from "./server-feature-flags";
 export const serverConfig = {
   platform: {
     baseUrl: featureFlags.currentEnv === "production" ? "https://mi23aibddp.eu-central-1.awsapprunner.com" : "http://localhost:3000",
+    email: process.env.EMAIL_APP,
+    appEmailPw: process.env.APP_EMAIL_PW
   },
   google: {
     apiKey: process.env.GOOGLE_API_KEY,
@@ -46,9 +48,9 @@ export const fireBaseDb = getFirestore(firebaseApp);
 const fireBaseAdminApp =
   admin.apps.length === 0
     ? admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: serverConfig.firebase.databaseURL,
-      })
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: serverConfig.firebase.databaseURL,
+    })
     : admin.app();
 
 export const adminRole = fireBaseAdminApp.auth();

@@ -168,7 +168,7 @@ function FilterSection() {
               <Input
                 className="h-8"
                 id="price-from"
-                onChange={(e) => setPriceRange([Number.parseInt(e.target.value) || 0, priceRange[1]])}
+                onChange={(e) => setPriceRange([Number.parseInt(e.target.value, 10) || 0, priceRange[1]])}
                 type="number"
                 value={priceRange[0]}
               />
@@ -180,7 +180,7 @@ function FilterSection() {
               <Input
                 className="h-8"
                 id="price-to"
-                onChange={(e) => setPriceRange([priceRange[0], Number.parseInt(e.target.value) || 3000])}
+                onChange={(e) => setPriceRange([priceRange[0], Number.parseInt(e.target.value, 10) || 3000])}
                 type="number"
                 value={priceRange[1]}
               />
@@ -282,8 +282,9 @@ export default function ProductList() {
             </div>
           ) : (
             <div
-              className={`grid gap-4 sm:gap-6 ${viewMode === "grid" ? "grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
-                }`}
+              className={`grid gap-4 sm:gap-6 ${
+                viewMode === "grid" ? "grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4" : "grid-cols-1"
+              }`}
             >
               {filteredProducts.map((product: any) => (
                 <Card className="group transition-shadow hover:shadow-lg" key={product.id}>
@@ -313,7 +314,7 @@ export default function ProductList() {
 
                       <div className="flex items-center gap-1">
                         <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
+                          {[...new Array(5)].map((_, i) => (
                             <Star className={`h-3 w-3 ${i < Math.floor(product.rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} key={i} />
                           ))}
                         </div>

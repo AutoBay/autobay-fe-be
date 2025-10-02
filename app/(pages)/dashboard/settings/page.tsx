@@ -618,8 +618,6 @@ function IntegrationsSection() {
         <p className="mt-1 text-muted-foreground">Supercharge your workflow using these integration</p>
       </div>
 
-
-
       <div className="space-y-4">
         {integrations.map((integration) => (
           <Card key={integration.name}>

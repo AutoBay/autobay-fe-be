@@ -8,9 +8,13 @@ export async function POST(request: Request, _res: NextResponse) {
   const { email } = emailSchema.parse(body);
 
   try {
-    await adminRole.generatePasswordResetLink(email, { url: `${serverConfig.platform.baseUrl}/auth/reset-password`, linkDomain: `${serverConfig.platform.baseUrl}/auth/reset-password`, handleCodeInApp: true });
+    await adminRole.generatePasswordResetLink(email, {
+      url: `${serverConfig.platform.baseUrl}/auth/reset-password`,
+      linkDomain: `${serverConfig.platform.baseUrl}/auth/reset-password`,
+      handleCodeInApp: true,
+    });
     return NextResponse.json({ message: "Password reset link sent to your email address" }, { status: ResponseStatus.SUCCESS });
   } catch (error) {
-    return NextResponse.json({ reason: (error as Error).message }, { status: ResponseStatus.INTERNAL_ERROR, });
+    return NextResponse.json({ message: (error as Error).message }, { status: ResponseStatus.INTERNAL_ERROR });
   }
 }

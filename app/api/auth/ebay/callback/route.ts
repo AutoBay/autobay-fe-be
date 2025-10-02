@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const code = url.searchParams.get("code");
 
   if (!code) {
-    return NextResponse.json(null, { status: ResponseStatus.BAD_REQUEST, statusText: "missing code" });
+    return NextResponse.json({ message: "missing code" }, { status: ResponseStatus.BAD_REQUEST });
   }
 
   ebayService.code = code;

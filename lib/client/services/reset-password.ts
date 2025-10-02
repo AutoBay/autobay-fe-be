@@ -1,6 +1,6 @@
 import { clientConfig } from "../client-config";
 
-const resetPw = async ({ email, password }: { email: string; password: string; }) => {
+const resetPw = async ({ email, password }: { email: string; password: string }) => {
   try {
     const r = await fetch(clientConfig.platform.resetPasswordUrl, {
       method: "POST",

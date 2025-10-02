@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
   const page = url.searchParams.get("_pgn") ?? "1";
 
   if (!seller) {
-    return NextResponse.json({}, { status: ResponseStatus.BAD_REQUEST, statusText: "Missing _ssn (seller ID)." });
+    return NextResponse.json({ message: "Missing _ssn (seller ID) parameter" }, { status: ResponseStatus.BAD_REQUEST });
   }
 
   const ebayUrl = `https://www.ebay.com/sch/i.html?_ssn=${encodeURIComponent(seller)}&_ipg=240&_pgn=${encodeURIComponent(page)}&LH_Sold=1&_sacat=0`;
@@ -35,12 +35,12 @@ export async function GET(req: NextRequest) {
     });
 
     if (!r.ok) {
-      return NextResponse.json(null, { status: ResponseStatus.BAD_REQUEST, statusText: `eBay request failed: ${r.status}` });
+      return NextResponse.json({ message: r.status }, { status: ResponseStatus.BAD_REQUEST });
     }
 
     const html = await r.text();
     return new NextResponse(html);
   } catch (e) {
-    return NextResponse.json({}, { status: ResponseStatus.INTERNAL_ERROR, statusText: `Fetch failed: ${e}` });
+    return NextResponse.json({ message: e }, { status: ResponseStatus.INTERNAL_ERROR });
   }
 }

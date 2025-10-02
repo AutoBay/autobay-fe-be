@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export interface Product {
+export type Product = {
   id: number;
   title: string;
   price: number;
@@ -15,9 +15,9 @@ export interface Product {
   brand: string;
   colors: string[];
   deliveryDays: number;
-}
+};
 
-interface ProductStore {
+type ProductStore = {
   // State
   products: Product[];
   filteredProducts: Product[];
@@ -38,7 +38,7 @@ interface ProductStore {
   setDeliveryDate: (date: string) => void;
   setViewMode: (mode: string) => void;
   applyFilters: () => void;
-}
+};
 
 // Sample products data with comprehensive filtering properties
 const sampleProducts: Product[] = [
@@ -56,7 +56,7 @@ const sampleProducts: Product[] = [
     category: "phones",
     brand: "apple",
     colors: ["black", "white"],
-    deliveryDays: 1
+    deliveryDays: 1,
   },
   {
     id: 2,
@@ -72,7 +72,7 @@ const sampleProducts: Product[] = [
     category: "phones",
     brand: "samsung",
     colors: ["black", "purple"],
-    deliveryDays: 2
+    deliveryDays: 2,
   },
   {
     id: 3,
@@ -88,7 +88,7 @@ const sampleProducts: Product[] = [
     category: "phones",
     brand: "huawei",
     colors: ["orange", "black"],
-    deliveryDays: 3
+    deliveryDays: 3,
   },
   {
     id: 4,
@@ -104,7 +104,7 @@ const sampleProducts: Product[] = [
     category: "headsets",
     brand: "sony",
     colors: ["black", "white"],
-    deliveryDays: 1
+    deliveryDays: 1,
   },
   {
     id: 5,
@@ -118,7 +118,7 @@ const sampleProducts: Product[] = [
     category: "headsets",
     brand: "bose",
     colors: ["black", "white"],
-    deliveryDays: 2
+    deliveryDays: 2,
   },
   {
     id: 6,
@@ -134,7 +134,7 @@ const sampleProducts: Product[] = [
     category: "laptops",
     brand: "apple",
     colors: ["gray", "white"],
-    deliveryDays: 3
+    deliveryDays: 3,
   },
   {
     id: 7,
@@ -150,7 +150,7 @@ const sampleProducts: Product[] = [
     category: "laptops",
     brand: "dell",
     colors: ["gray", "black"],
-    deliveryDays: 5
+    deliveryDays: 5,
   },
   {
     id: 8,
@@ -164,7 +164,7 @@ const sampleProducts: Product[] = [
     category: "laptops",
     brand: "microsoft",
     colors: ["blue", "gray"],
-    deliveryDays: 4
+    deliveryDays: 4,
   },
   {
     id: 9,
@@ -180,7 +180,7 @@ const sampleProducts: Product[] = [
     category: "tv",
     brand: "samsung",
     colors: ["black"],
-    deliveryDays: 7
+    deliveryDays: 7,
   },
   {
     id: 10,
@@ -196,7 +196,7 @@ const sampleProducts: Product[] = [
     category: "tv",
     brand: "lg",
     colors: ["black"],
-    deliveryDays: 6
+    deliveryDays: 6,
   },
   {
     id: 11,
@@ -212,7 +212,7 @@ const sampleProducts: Product[] = [
     category: "sound",
     brand: "jbl",
     colors: ["blue", "red", "black"],
-    deliveryDays: 2
+    deliveryDays: 2,
   },
   {
     id: 12,
@@ -228,8 +228,8 @@ const sampleProducts: Product[] = [
     category: "watches",
     brand: "apple",
     colors: ["black", "white", "red"],
-    deliveryDays: 1
-  }
+    deliveryDays: 1,
+  },
 ];
 
 export const useProductStore = create<ProductStore>((set, get) => ({
@@ -262,18 +262,14 @@ export const useProductStore = create<ProductStore>((set, get) => ({
 
   toggleBrand: (brand) => {
     const { selectedBrands } = get();
-    const newBrands = selectedBrands.includes(brand)
-      ? selectedBrands.filter((b) => b !== brand)
-      : [...selectedBrands, brand];
+    const newBrands = selectedBrands.includes(brand) ? selectedBrands.filter((b) => b !== brand) : [...selectedBrands, brand];
     set({ selectedBrands: newBrands });
     get().applyFilters();
   },
 
   toggleColor: (color) => {
     const { selectedColors } = get();
-    const newColors = selectedColors.includes(color)
-      ? selectedColors.filter((c) => c !== color)
-      : [...selectedColors, color];
+    const newColors = selectedColors.includes(color) ? selectedColors.filter((c) => c !== color) : [...selectedColors, color];
     set({ selectedColors: newColors });
     get().applyFilters();
   },
@@ -288,15 +284,7 @@ export const useProductStore = create<ProductStore>((set, get) => ({
   },
 
   applyFilters: () => {
-    const {
-      products,
-      selectedCategory,
-      searchQuery,
-      priceRange,
-      selectedBrands,
-      selectedColors,
-      deliveryDate
-    } = get();
+    const { products, selectedCategory, searchQuery, priceRange, selectedBrands, selectedColors, deliveryDate } = get();
 
     let filtered = products;
 
@@ -309,17 +297,12 @@ export const useProductStore = create<ProductStore>((set, get) => ({
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(
-        (product) =>
-          product.title.toLowerCase().includes(query) ||
-          product.brand.toLowerCase().includes(query) ||
-          product.seller.toLowerCase().includes(query)
+        (product) => product.title.toLowerCase().includes(query) || product.brand.toLowerCase().includes(query) || product.seller.toLowerCase().includes(query)
       );
     }
 
     // Price range filter
-    filtered = filtered.filter(
-      (product) => product.price >= priceRange[0] && product.price <= priceRange[1]
-    );
+    filtered = filtered.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1]);
 
     // Brand filter
     if (selectedBrands.length > 0) {
@@ -328,24 +311,15 @@ export const useProductStore = create<ProductStore>((set, get) => ({
 
     // Color filter
     if (selectedColors.length > 0) {
-      filtered = filtered.filter((product) =>
-        product.colors.some((color) => selectedColors.includes(color))
-      );
+      filtered = filtered.filter((product) => product.colors.some((color) => selectedColors.includes(color)));
     }
 
     // Delivery date filter
     if (deliveryDate !== "any") {
-      const maxDays =
-        deliveryDate === "today"
-          ? 0
-          : deliveryDate === "tomorrow"
-            ? 1
-            : deliveryDate === "week"
-              ? 7
-              : 999;
+      const maxDays = deliveryDate === "today" ? 0 : deliveryDate === "tomorrow" ? 1 : deliveryDate === "week" ? 7 : 999;
       filtered = filtered.filter((product) => product.deliveryDays <= maxDays);
     }
 
     set({ filteredProducts: filtered });
-  }
+  },
 }));

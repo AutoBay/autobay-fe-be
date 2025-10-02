@@ -7,12 +7,13 @@ type ButtonWithLoadingProps = {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
   loading: boolean;
   text: string;
+  onClick?: () => void;
   icon?: React.ReactNode;
 };
 
-const ButtonWithLoading: React.FC<ButtonWithLoadingProps> = ({ className, type, variant, loading, text, icon }) => {
+const ButtonWithLoading: React.FC<ButtonWithLoadingProps> = ({ className, type, variant, loading, text, icon, onClick }) => {
   return (
-    <Button className={className} type={type} variant={variant}>
+    <Button className={className} onClick={onClick} type={type} variant={variant}>
       {loading ? (
         <Loader />
       ) : (

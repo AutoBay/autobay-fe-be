@@ -61,7 +61,7 @@ export default function ForgetPasswordPage() {
                     <FormItem className="grid gap-2">
                       <FormLabel htmlFor="email">Email</FormLabel>
                       <FormControl>
-                        <Input autoComplete="email" id="email" placeholder="johndoe@mail.com" type="email"  {...field} />
+                        <Input autoComplete="email" id="email" placeholder="johndoe@mail.com" type="email" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>

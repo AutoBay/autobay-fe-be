@@ -27,7 +27,7 @@ const FormSchema = z
       .string()
       .min(1, "Expiry month is required")
       .refine((value) => {
-        const month = Number.parseInt(value);
+        const month = Number.parseInt(value, 10);
         return month >= 1 && month <= 12;
       }, "Invalid month"),
 
@@ -35,7 +35,7 @@ const FormSchema = z
       .string()
       .min(1, "Expiry year is required")
       .refine((value) => {
-        const year = Number.parseInt(value);
+        const year = Number.parseInt(value, 10);
         const currentYear = new Date().getFullYear();
         return year >= currentYear && year <= currentYear + 20;
       }, "Invalid year"),
@@ -50,13 +50,15 @@ const FormSchema = z
   // Add expiry date validation
   .refine(
     (data) => {
-      if (!(data.expiryMonth && data.expiryYear)) return true; // Let individual field validation handle this
+      if (!(data.expiryMonth && data.expiryYear)) {
+        return true; // Let individual field validation handle this
+      }
 
       const currentDate = new Date();
       const currentYear = currentDate.getFullYear();
       const currentMonth = currentDate.getMonth() + 1;
-      const expiryYear = Number.parseInt(data.expiryYear);
-      const expiryMonth = Number.parseInt(data.expiryMonth);
+      const expiryYear = Number.parseInt(data.expiryYear, 10);
+      const expiryMonth = Number.parseInt(data.expiryMonth, 10);
 
       return expiryYear > currentYear || (expiryYear === currentYear && expiryMonth >= currentMonth);
     },
@@ -104,7 +106,7 @@ export default function CreditCardForm() {
     form.setValue("cvv", value.cvv, { shouldValidate: true });
   };
 
-  const handleValidationChange = (isValid: boolean, errors: any) => {
+  const handleValidationChange = (isValid: boolean, _errors: any) => {
     setIsCardValid(isValid);
   };
 

@@ -27,8 +27,8 @@ export default function ResetPasswordPage() {
 
   async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
     try {
-      await verifyPasswordResetCode(fireBaseClientAuth, actionCode || '');
-      await confirmPasswordReset(fireBaseClientAuth, actionCode || '', values.password);
+      await verifyPasswordResetCode(fireBaseClientAuth, actionCode || "");
+      await confirmPasswordReset(fireBaseClientAuth, actionCode || "", values.password);
       toast.success("Password reset successfully. You can now log in with your new password.");
     } catch (error) {
       console.error("Passwowrd reset failed:", error);

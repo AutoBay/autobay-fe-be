@@ -33,6 +33,15 @@ export const serverConfig = {
     databaseURL: process.env.FIREBASE_DB_URL,
     measurementId: process.env.FIREBASE_MEASUREMENT_ID,
   },
+  paypal: {
+    webhooks: {
+      allEvents: process.env.WEBHOOK_ID_ALL_EVENT,
+      biliingSubscription: process.env.WEBHOOK_ID_BILLING_SUBSCRIPTION,
+      invoice: process.env.WEBHOOK_ID_INVOICE,
+      checkout: process.env.WEBHOOK_ID_CHECKOUT,
+      customerPayout: process.env.WEBHOOK_ID_CUSTOMER_PAYOUT,
+    }
+  }
 };
 
 export const oAuth2Client = new OAuth2Client({
@@ -48,9 +57,9 @@ export const fireBaseDb = getFirestore(firebaseApp);
 const fireBaseAdminApp =
   admin.apps.length === 0
     ? admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        databaseURL: serverConfig.firebase.databaseURL,
-      })
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: serverConfig.firebase.databaseURL,
+    })
     : admin.app();
 
 export const adminRole = fireBaseAdminApp.auth();

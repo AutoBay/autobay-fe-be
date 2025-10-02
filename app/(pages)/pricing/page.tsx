@@ -245,7 +245,6 @@ const Example = () => {
                     compactDisplay: "short",
                     minimumFractionDigits: 0,
                     maximumFractionDigits: 0,
-
                   }}
                   value={frequency === "monthly" ? 0 : 0.2}
                 />

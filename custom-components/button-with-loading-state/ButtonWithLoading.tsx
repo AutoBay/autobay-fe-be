@@ -9,11 +9,12 @@ type ButtonWithLoadingProps = {
   text: string;
   onClick?: () => void;
   icon?: React.ReactNode;
+  id?: string;
 };
 
-const ButtonWithLoading: React.FC<ButtonWithLoadingProps> = ({ className, type, variant, loading, text, icon, onClick }) => {
+const ButtonWithLoading: React.FC<ButtonWithLoadingProps> = ({ className, type, variant, loading, text, icon, onClick, id }) => {
   return (
-    <Button className={className} onClick={onClick} type={type} variant={variant}>
+    <Button className={className} id={id} onClick={onClick} type={type} variant={variant}>
       {loading ? (
         <Loader />
       ) : (

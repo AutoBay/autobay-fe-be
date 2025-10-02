@@ -4,7 +4,7 @@ export const clientFeatureFlags: ClientFeatureFlags = {
   reactFormHooksModeLogin: "onSubmit",
   reactFormHooksModeRegister: "onSubmit",
   reactFormHooksModeContactUs: "onSubmit",
-  reactFormHookModeLoginWithPhoneNumber: "onSubmit"
+  reactFormHookModeLoginWithPhoneNumber: "onSubmit",
 };
 
 export const clientFeatureFlagsConfig = {
@@ -12,6 +12,6 @@ export const clientFeatureFlagsConfig = {
     login: clientFeatureFlags.reactFormHooksModeLogin,
     register: clientFeatureFlags.reactFormHooksModeRegister,
     contactUs: clientFeatureFlags.reactFormHooksModeContactUs,
-    loginWithPhoneNumber: clientFeatureFlags.reactFormHookModeLoginWithPhoneNumber
+    loginWithPhoneNumber: clientFeatureFlags.reactFormHookModeLoginWithPhoneNumber,
   },
 };

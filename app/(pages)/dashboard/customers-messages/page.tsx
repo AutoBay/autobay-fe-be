@@ -71,7 +71,7 @@ export default async function CustomersPage() {
           <h2 className="font-semibold text-2xl tracking-tight">Welcome back!</h2>
           <p className="text-muted-foreground">Here&apos;s a list of your tasks for this month.</p>
         </div>
-        <div className="flex items-center gap-2"></div>
+        <div className="flex items-center gap-2" />
       </div>
       <DataTable data={tasks} />
     </div>

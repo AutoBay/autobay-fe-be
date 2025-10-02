@@ -16,18 +16,20 @@ import type { LoginWithPhoneNumberValue } from "@/lib/client/client-definitions"
 import { clientFeatureFlagsConfig } from "@/lib/client/client-feature-flags";
 import { loginWithPhoneNumberSchema } from "@/lib/client/schemas/login-with-phone-number-schema";
 
-// TS: declare the window slot once
+// TODO: Fix this page properly currently not working
+
+// TS helper for window
 declare global {
-  interface Window {
+  type Window = {
     recaptchaVerifier?: RecaptchaVerifier;
     confirmationResult?: ConfirmationResult;
-  }
+  };
 }
 
 export default function LoginWithPhoneNumber() {
   const router = useRouter();
   const [isPending, setPending] = useState(false);
-  const recaptchaReady = useRef(false); // avoid strict-mode double effects
+  const recaptchaReady = useRef(false);
 
   fireBaseClientAuth.useDeviceLanguage();
 
@@ -37,30 +39,34 @@ export default function LoginWithPhoneNumber() {
     mode: clientFeatureFlagsConfig.formMode.loginWithPhoneNumber,
   });
 
-  // Create a single invisible reCAPTCHA instance once
   useEffect(() => {
-    if (typeof window === "undefined") return;
-    if (recaptchaReady.current) return;
-
-    if (!window.recaptchaVerifier) {
-      window.recaptchaVerifier = new RecaptchaVerifier(fireBaseClientAuth, "recaptcha-container", {
-        size: "invisible",
-        callback: () => {
-          // solved -> proceed
-        },
-      });
-      // Render once so it’s ready
-      window.recaptchaVerifier.render().catch(console.error);
+    if (recaptchaReady.current) {
+      return;
     }
 
+    // Create an invisible reCAPTCHA bound to the submit button
+    window.recaptchaVerifier = new RecaptchaVerifier(fireBaseClientAuth, "sign-in-button", {
+      size: "invisible",
+      callback: async () => {
+        // reCAPTCHA solved -> proceed with submit handler
+        // No-op here; onSubmit handles the flow.
+      },
+      "expired-callback": () => {
+        // Optional: inform user or recreate verifier
+        console.warn("reCAPTCHA expired");
+      },
+    });
+
     recaptchaReady.current = true;
+
     return () => {
-      // Optional: clean up when the component unmounts
       try {
         window.recaptchaVerifier?.clear();
         window.recaptchaVerifier = undefined;
-      } catch { }
-      recaptchaReady.current = false;
+        recaptchaReady.current = false;
+      } catch {
+        // ignore
+      }
     };
   }, []);
 
@@ -68,26 +74,32 @@ export default function LoginWithPhoneNumber() {
     try {
       setPending(true);
 
-      // Ensure E.164 (“+15551234567”)
-      const phone = value.phoneNumber.trim();
-
+      // Ensure we have a verifier; recreate if needed
       if (!window.recaptchaVerifier) {
-        form.setError("phoneNumber", { message: "reCAPTCHA not initialized. Reload and try again." });
-        return;
+        window.recaptchaVerifier = new RecaptchaVerifier(fireBaseClientAuth, "sign-in-button", { size: "invisible" });
       }
 
-      const confirmation = await signInWithPhoneNumber(fireBaseClientAuth, phone, window.recaptchaVerifier);
+      // IMPORTANT: pass appVerifier as the 3rd arg
+      const confirmation = await signInWithPhoneNumber(
+        fireBaseClientAuth,
+        value.phoneNumber, // must be E.164, e.g., "+9725XXXXXXXX"
+        window.recaptchaVerifier
+      );
 
       window.confirmationResult = confirmation;
-      // Example: navigate to code entry screen
+      // Next step: take user to OTP page
       // router.push("/auth/verify-phone-number");
-    } catch (err: unknown) {
-      console.error("Error sending OTP:", err);
-      // Reset the widget so user can retry
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      form.setError("phoneNumber", { message: "Failed to send OTP. Please try again." });
+      // Reset verifier after error to avoid “re-used” token issues
       try {
-        await window.recaptchaVerifier?.reset();
-      } catch { }
-      form.setError("phoneNumber", { message: "Failed to send OTP. Verify the number and try again." });
+        window.recaptchaVerifier?.clear();
+        window.recaptchaVerifier = undefined;
+        recaptchaReady.current = false;
+      } catch {
+        // ignore
+      }
     } finally {
       setPending(false);
     }
@@ -101,7 +113,7 @@ export default function LoginWithPhoneNumber() {
             <Form {...form}>
               <form className="flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <h1 className="font-bold text-2xl">Login with Phone number</h1>
+                  <h1 className="font-bold text-2xl">Login with phone number</h1>
                   <p className="text-balance text-muted-foreground text-sm">Enter your phone number to receive a verification code.</p>
                 </div>
 
@@ -113,20 +125,15 @@ export default function LoginWithPhoneNumber() {
                       <FormItem>
                         <FormLabel className="sr-only">Phone number</FormLabel>
                         <FormControl>
-                          <Input
-                            autoComplete="tel"
-                            autoFocus
-                            className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:font-medium file:text-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                            placeholder="+15550000000"
-                            type="tel"
-                            {...field}
-                          />
+                          <Input autoComplete="tel" autoFocus placeholder="+1 (555) 000-0000" type="tel" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <ButtonWithLoading className="w-full" loading={isPending} text="Send code" type="submit" variant="default" />
+
+                  {/* The button id must match the RecaptchaVerifier's button id */}
+                  <ButtonWithLoading className="w-full" id="sign-in-button" loading={isPending} text="Send code" type="submit" variant="default" />
                 </div>
 
                 <div className="text-center text-sm">
@@ -136,9 +143,8 @@ export default function LoginWithPhoneNumber() {
                   </a>
                 </div>
               </form>
-
-              {/* Must exist in the DOM before RecaptchaVerifier is created */}
-              <div id="recaptcha-container" />
+              {/* Not needed for invisible bound-to-button flow; safe to remove */}
+              {/* <div id="recaptcha-container" /> */}
             </Form>
 
             <div className="mt-6 flex items-center justify-between text-muted-foreground text-xs">

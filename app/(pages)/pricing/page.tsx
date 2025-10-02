@@ -224,10 +224,20 @@ const Example = () => {
         <Tabs defaultValue={frequency} onValueChange={setFrequency}>
           <TabsList>
             <TabsTrigger value="monthly">Monthly</TabsTrigger>
-            <TabsTrigger value="yearly">
-              Yearly
-              <Badge variant="destructive">
-                20% off
+            <TabsTrigger className="gap-1" value="yearly">
+              <span>Yearly</span>
+              <Badge className="px-1.5" variant={frequency === "monthly" ? "outline" : "destructive"}>
+                <NumberFlow
+                  className="text-xs"
+                  format={{
+                    style: "percent",
+                    compactDisplay: "short",
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+
+                  }}
+                  value={frequency === "monthly" ? 0 : 0.2}
+                />
               </Badge>
             </TabsTrigger>
           </TabsList>

@@ -1,4 +1,4 @@
-const page = () => {
+const TermsOfServicePage = () => {
   return (
     <div>
       <h1>Terms of Service — Autobay</h1>
@@ -86,4 +86,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default TermsOfServicePage;

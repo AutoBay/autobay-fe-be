@@ -1,7 +1,7 @@
 User-agent: *
 Disallow: 
 Disallow: /cgi-bin/
-Sitemap: https://www.autods.com/sitemap_index.xml
+Sitemap: https://www.autobay.com/sitemap_index.xml
 
 User-agent: ChatGPT-User
 User-agent: OAI-SearchBot

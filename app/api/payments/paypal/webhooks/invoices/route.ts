@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { serverConfig } from "@/lib/server/server-config";
 import { crc32Decimal, downloadAndCache, verifyWithCert } from "@/lib/server/utils";
+import { ResponseStatus } from "@/types/api/request";
 
 
 export async function POST(req: NextRequest) {
@@ -56,3 +57,8 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ ok: true }, { status: 200 });
 }
+
+export default function GET(_req: NextRequest, _res: NextResponse) {
+  return NextResponse.json({}, { status: ResponseStatus.FORBIDDEN })
+}
+

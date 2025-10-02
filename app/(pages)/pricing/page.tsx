@@ -1,155 +1,359 @@
 "use client";
-
-import { Check } from "lucide-react";
+import NumberFlow from "@number-flow/react";
+import { ArrowRight, BadgeCheck } from "lucide-react";
 import { useState } from "react";
-
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Separator } from "@/components/ui/separator";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
-const PricingPage = () => {
-  const [isAnnually, setIsAnnually] = useState(false);
+const plans = [
+  {
+    id: "starter",
+    name: "Launch 500",
+    price: {
+      monthly: 35,
+      yearly: 28,
+    },
+    description: "Up to 500 Listings. Full features included.",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Subscribe to Starter",
+  },
+  {
+    id: "drive-1000",
+    name: "Drive 1,000",
+    price: { monthly: 55, yearly: 44 },
+    description: "Up to 1,000 Listings. Includes Tracking Number Conversion (+$10/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "cruise-3000",
+    name: "Cruise 3,000",
+    price: { monthly: 95, yearly: 76 },
+    description: "Up to 3,000 Listings. Advanced Reports & Monitoring. Tracking Number Conversion (+$15/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "turbo-5000",
+    name: "Turbo 5,000",
+    price: { monthly: 150, yearly: 120 },
+    description: "Up to 5,000 Listings. Priority Support. Tracking Number Conversion (+$20/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "nitro-7500",
+    name: "Nitro 7,500",
+    price: { monthly: 215, yearly: 172 },
+    description: "Up to 7,500 Listings. Dedicated Account Review. Tracking Number Conversion (+$25/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "velocity-10000",
+    name: "Velocity 10,000",
+    price: { monthly: 285, yearly: 228 },
+    description: "Up to 10,000 Listings. Full API Access. Tracking Number Conversion (+$30/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "hyper-25000",
+    name: "Hyper 25,000",
+    price: { monthly: 625, yearly: 500 },
+    description: "Up to 25,000 Listings. Custom Integrations. Tracking Number Conversion (+$40/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "vortex-50000",
+    name: "Vortex 50,000",
+    price: { monthly: 1150, yearly: 920 },
+    description: "Up to 50,000 Listings. Enterprise SLA Support. Tracking Number Conversion (+$50/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "apex-100000",
+    name: "Apex 100,000",
+    price: { monthly: 2250, yearly: 1800 },
+    description: "Up to 100,000 Listings. White-label Capabilities. Tracking Number Conversion (+$60/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "titan-250000",
+    name: "Titan 250,000",
+    price: { monthly: 5500, yearly: 4400 },
+    description: "Up to 250,000 Listings. Enterprise Customization & Dedicated Manager. Tracking Number Conversion (+$75/month).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+  {
+    id: "galaxy-500000",
+    name: "Galaxy 500,000",
+    price: { monthly: 9950, yearly: 7960 },
+    description: "Up to 500,000 Listings. Enterprise Suite Access. 24/7 Support & Dedicated Infrastructure. Tracking Number Conversion (Included).",
+    features: [
+      "Dashboard & Reporting",
+      "Discover & List",
+      "Catalog & Listings Management",
+      "Orders & Auto Ordering",
+      "Monitoring & Alerts",
+      "Tracking Number Updates",
+      "Learning Center",
+      "Performance Reviews",
+      "Dedicated Support",
+    ],
+    cta: "Get started",
+  },
+];
+const Example = () => {
+  const [frequency, setFrequency] = useState<string>("monthly");
   return (
-    <section className="py-32">
-      <div className="container">
-        <div className="mx-auto flex max-w-7xl flex-col gap-6">
-          <h2 className="text-pretty font-bold text-4xl lg:text-6xl">Pricing</h2>
-          <div className="flex flex-col justify-between gap-10 md:flex-row">
-            <p className="max-w-3xl text-muted-foreground lg:text-xl">
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Fugiat odio, expedita neque ipsum pariatur suscipit!
-            </p>
-            <div className="flex h-11 w-fit shrink-0 items-center rounded-md bg-muted p-1 text-lg">
-              <RadioGroup
-                className="h-full grid-cols-2"
-                defaultValue="monthly"
-                onValueChange={(value) => {
-                  setIsAnnually(value === "annually");
-                }}
-              >
-                <div className='h-full rounded-md transition-all has-[button[data-state="checked"]]:bg-background'>
-                  <RadioGroupItem className="peer sr-only" id="monthly" value="monthly" />
-                  <Label
-                    className="flex h-full cursor-pointer items-center justify-center px-7 font-semibold text-muted-foreground peer-data-[state=checked]:text-primary"
-                    htmlFor="monthly"
-                  >
-                    Monthly
-                  </Label>
-                </div>
-                <div className='h-full rounded-md transition-all has-[button[data-state="checked"]]:bg-background'>
-                  <RadioGroupItem className="peer sr-only" id="annually" value="annually" />
-                  <Label
-                    className="flex h-full cursor-pointer items-center justify-center gap-1 px-7 font-semibold text-muted-foreground peer-data-[state=checked]:text-primary"
-                    htmlFor="annually"
-                  >
-                    Yearly
-                  </Label>
-                </div>
-              </RadioGroup>
-            </div>
-          </div>
-          <div className="flex w-full flex-col items-stretch gap-6 md:flex-row">
-            <div className="flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">FREE</Badge>
-              <span className="font-medium text-4xl">$0</span>
-              <p className="invisible text-muted-foreground">Per month</p>
-              <Separator className="my-6" />
-              <div className="flex flex-col justify-between gap-20">
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Unlimited Integrations</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Windows, Linux, Mac support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>24/7 Support</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Free updates</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Get Started</Button>
+    <div className="not-prose flex flex-col gap-16 px-8 py-24 text-center">
+      <div className="flex flex-col items-center justify-center gap-8">
+        <h1 className="mb-0 text-balance font-medium text-5xl tracking-tighter!">Simple, transparent pricing</h1>
+        <p className="mx-auto mt-0 mb-0 max-w-2xl text-balance text-lg text-muted-foreground">
+          Managing a business is hard enough, so why not make your life easier? Our pricing plans are simple, transparent and scale with you.
+        </p>
+        <Tabs defaultValue={frequency} onValueChange={setFrequency}>
+          <TabsList>
+            <TabsTrigger value="monthly">Monthly</TabsTrigger>
+            <TabsTrigger value="yearly">
+              Yearly
+              <Badge variant="destructive">
+                20% off
+              </Badge>
+            </TabsTrigger>
+          </TabsList>
+        </Tabs>
+        <div className="flex w-full gap-2">
+          {plans.slice(0, 3).map((plan) => {
+            const price = plan.price[frequency as keyof typeof plan.price];
+            return (
+              <Card className={cn("relative w-full justify-between text-left", plan.popular && "ring-2 ring-primary")} key={plan.id}>
+                {plan.popular && <Badge className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 rounded-full">Popular</Badge>}
+                <CardHeader>
+                  <CardTitle className="font-medium text-xl">{plan.name}</CardTitle>
+                  <CardDescription>
+                    <p>{plan.description}</p>
+                    {typeof price === "number" ? (
+                      <NumberFlow
+                        className="font-medium text-foreground"
+                        format={{
+                          style: "currency",
+                          currency: "USD",
+                          minimumFractionDigits: 0,
+                        }}
+                        suffix={frequency === "yearly" ? "/month" : "/month"}
+                        value={price}
+                      />
+                    ) : (
+                      <span className="font-medium text-foreground">{price}.</span>
+                    )}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="grid gap-2">
+                  {plan.features.map((feature, index) => (
+                    <div className="flex items-center gap-2 text-muted-foreground text-sm" key={index}>
+                      <BadgeCheck className="h-4 w-4" color={"green"} />
+                      {feature}
+                    </div>
+                  ))}
+                </CardContent>
+                <CardFooter>
+                  <Button className="w-full" variant={plan.popular ? "default" : "secondary"}>
+                    {plan.cta}
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </CardFooter>
+              </Card>
+            );
+          })}
+          {/* Custom Plan Card */}
+          <Card className="relative w-full justify-between text-left ring-2 ring-primary">
+            <Badge className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 rounded-full">Custom Plan</Badge>
+            <CardHeader>
+              <CardTitle className="font-medium text-xl">Custom Plan</CardTitle>
+              <CardDescription>
+                <p>Select the plan that best fits your needs.</p>
+                <Select
+                  onValueChange={(value) => {
+                    const selectedPlan = plans.find((p) => p.id === value);
+                    if (selectedPlan && typeof selectedPlan.price[frequency as keyof typeof selectedPlan.price] === "number") {
+                      // You might want to store the selected plan's price in a state.
+                      // For now, just display it.
+                    }
+                  }}
+                >
+                  <SelectTrigger className="mt-2 w-full text-left">
+                    <SelectValue placeholder="Select your plan" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {plans.slice(3).map((plan) => (
+                      <SelectItem className="text-left" key={plan.id} value={plan.id}>
+                        {plan.name} -{" "}
+                        {typeof plan.price[frequency as keyof typeof plan.price] === "number"
+                          ? frequency === "yearly" // Removed .toFixed(2)
+                            ? `$${plan.price[frequency as keyof typeof plan.price]}/month`
+                            : `$${plan.price[frequency as keyof typeof plan.price]}/month`
+                          : plan.price[frequency as keyof typeof plan.price]}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                {/* Display selected plan's price dynamically */}
+                {/* This part would need state management to show the selected plan's price */}
+                <span className="mt-2 block font-medium text-foreground">
+                  {/* Placeholder for dynamic price display */}
+                  {/* For example: {selectedCustomPlanPrice ? `$${selectedCustomPlanPrice.toFixed(2)}/month` : "Select a plan"} */}
+                </span>
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-2">
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Dashboard & Reporting
               </div>
-            </div>
-            <div className="flex w-full flex-col rounded-lg border p-6 text-left">
-              <Badge className="mb-8 block w-fit">PRO</Badge>
-              {isAnnually ? (
-                <>
-                  <span className="font-medium text-4xl">$99</span>
-                  <p className="text-muted-foreground">Per year</p>
-                </>
-              ) : (
-                <>
-                  <span className="font-medium text-4xl">$9</span>
-                  <p className="text-muted-foreground">Per month</p>
-                </>
-              )}
-              <Separator className="my-6" />
-              <div className="flex h-full flex-col justify-between gap-20">
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Everything in FREE</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Live call suport every month</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Unlimited Storage</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Purchase</Button>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Discover & List
               </div>
-            </div>
-            <div className="flex w-full flex-col rounded-lg border bg-muted p-6 text-left">
-              <Badge className="mb-8 block w-fit">Elite</Badge>
-              {isAnnually ? (
-                <>
-                  <span className="font-medium text-4xl">$249</span>
-                  <p className="text-muted-foreground">Per year</p>
-                </>
-              ) : (
-                <>
-                  <span className="font-medium text-4xl">$9</span>
-                  <p className="text-muted-foreground">Per month</p>
-                </>
-              )}
-              <Separator className="my-6" />
-              <div className="flex h-full flex-col justify-between gap-20">
-                <ul className="space-y-4 text-muted-foreground">
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Everything in PRO</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Advanced analytics</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Custom branding</span>
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Check className="size-4" />
-                    <span>Unlimited users</span>
-                  </li>
-                </ul>
-                <Button className="w-full">Purchase</Button>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Catalog & Listings Management
               </div>
-            </div>
-          </div>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Orders & Auto Ordering
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Monitoring & Alerts
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Tracking Number Updates
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Learning Center
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Performance Reviews
+              </div>
+              <div className="flex items-center gap-2 text-muted-foreground text-sm">
+                <BadgeCheck className="h-4 w-4" color={"green"} /> Dedicated Support
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button className="w-full" variant="default">
+                Get started
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            </CardFooter>
+          </Card>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
-
-export { PricingPage };
+export default Example;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
+import { Navbar } from "@/components/navbar";
 import { TanstackProvider } from "./providers/tanstack-provider";
 import { ThemeProvider } from "./providers/theme-provider";
 import ToasterProvider from "./providers/toaster-provider";
@@ -22,11 +23,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link href="/favicon.ico" rel="icon" sizes="any" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} suppressHydrationWarning={true}>
-        <ThemeProvider attribute="class" defaultTheme="system" disableTransitionOnChange enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" disableTransitionOnChange enableSystem>
           <TanstackProvider>
             <AuthProvider>
               <ToasterProvider>
-                {/* <Navbar /> */}
+                <Navbar />
                 <main>{children}</main>
                 {/* <Footer /> */}
               </ToasterProvider>

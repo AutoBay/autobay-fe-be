@@ -140,10 +140,6 @@
     text-rendering: optimizeLegibility;
   }
 
-  main {
-    /* @apply flex justify-center h-[100vh] items-center */
-  }
-
   html {
     @apply scroll-smooth;
   }

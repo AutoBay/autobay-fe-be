@@ -30,6 +30,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Subscribe to Starter",
+    popular: false,
   },
   {
     id: "drive-1000",
@@ -48,6 +49,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: true,
   },
   {
     id: "cruise-3000",
@@ -66,6 +68,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "turbo-5000",
@@ -84,6 +87,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "nitro-7500",
@@ -102,6 +106,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "velocity-10000",
@@ -120,6 +125,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "hyper-25000",
@@ -138,6 +144,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "vortex-50000",
@@ -156,6 +163,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "apex-100000",
@@ -174,6 +182,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "titan-250000",
@@ -192,6 +201,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
   {
     id: "galaxy-500000",
@@ -210,6 +220,7 @@ const plans = [
       "Dedicated Support",
     ],
     cta: "Get started",
+    popular: false,
   },
 ];
 const Example = () => {

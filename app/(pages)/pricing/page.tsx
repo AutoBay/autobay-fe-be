@@ -257,8 +257,8 @@ const Example = () => {
           {plans.slice(0, 3).map((plan) => {
             const price = plan.price[frequency as keyof typeof plan.price];
             return (
-              <Card className={cn("relative w-full justify-between text-left", plan.popular && "ring-2 ring-primary")} key={plan.id}>
-                {plan.popular && <Badge className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 rounded-full">Popular</Badge>}
+              <Card className={cn("relative w-full justify-between text-left", plan.popular && "ring-2 ring-amber-500")} key={plan.id}>
+                {plan.popular && <Badge className="-translate-x-1/2 -translate-y-1/2 absolute top-0 left-1/2 rounded-full bg-amber-500">Popular</Badge>}
                 <CardHeader>
                   <CardTitle className="font-medium text-xl">{plan.name}</CardTitle>
                   <CardDescription>

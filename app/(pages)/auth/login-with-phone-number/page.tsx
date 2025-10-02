@@ -27,7 +27,7 @@ declare global {
 }
 
 export default function LoginWithPhoneNumber() {
-  const router = useRouter();
+  const _router = useRouter();
   const [isPending, setPending] = useState(false);
   const recaptchaReady = useRef(false);
 

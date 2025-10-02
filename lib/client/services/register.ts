@@ -3,7 +3,7 @@ import type { RegisterValues } from "../client-definitions";
 
 const registerUser = async (values: RegisterValues) => {
   try {
-    const r = await fetch(`${clientConfig.platform.baseUrl}/api/auth/register`, {
+    const r = await fetch(clientConfig.platform.registerUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

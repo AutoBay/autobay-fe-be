@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ButtonWithLoading from "@/custom-components/button-with-loading-state/ButtonWithLoading";
-import { clientConfig, fireBaseClientAuth, firebaseClientApp, googleProvider } from "@/lib/client/client-config";
+import { clientConfig, fireBaseClientAuth, googleProvider } from "@/lib/client/client-config";
 import type { LoginValues } from "@/lib/client/client-definitions";
 import { clientFeatureFlagsConfig } from "@/lib/client/client-feature-flags";
 import { loginSchema } from "@/lib/client/schemas/login-schema";

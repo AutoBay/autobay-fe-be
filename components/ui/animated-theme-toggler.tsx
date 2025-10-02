@@ -31,7 +31,9 @@ export const AnimatedThemeToggler = ({ className }: Props) => {
   }, []);
 
   const toggleTheme = useCallback(async () => {
-    if (!buttonRef.current) return;
+    if (!buttonRef.current) {
+      return;
+    }
 
     await document.startViewTransition(() => {
       flushSync(() => {

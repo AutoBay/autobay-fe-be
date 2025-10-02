@@ -1,8 +1,5 @@
-
 const MainGoalPage = () => {
-  return (
-    <div>MainGoalPage</div>
-  )
-}
+  return <div>MainGoalPage</div>;
+};
 
-export default MainGoalPage
+export default MainGoalPage;

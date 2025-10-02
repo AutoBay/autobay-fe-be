@@ -1,8 +1,5 @@
-
 const AutomationsPage = () => {
-  return (
-    <div>AutomationsPage</div>
-  )
-}
+  return <div>AutomationsPage</div>;
+};
 
-export default AutomationsPage
+export default AutomationsPage;

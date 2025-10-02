@@ -1,8 +1,5 @@
-
 const EbayAccountsPage = () => {
-  return (
-    <div>EbayAccountsPage</div>
-  )
-}
+  return <div>EbayAccountsPage</div>;
+};
 
-export default EbayAccountsPage
+export default EbayAccountsPage;

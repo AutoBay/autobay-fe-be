@@ -1,8 +1,5 @@
-
 const AmazonAccountsPage = () => {
-  return (
-    <div>AmazonAccountsPage</div>
-  )
-}
+  return <div>AmazonAccountsPage</div>;
+};
 
-export default AmazonAccountsPage
+export default AmazonAccountsPage;

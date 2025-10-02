@@ -1,8 +1,5 @@
-
 const AmazonSupplierSettings = () => {
-  return (
-    <div>AmazonSupplierSettings</div>
-  )
-}
+  return <div>AmazonSupplierSettings</div>;
+};
 
-export default AmazonSupplierSettings
+export default AmazonSupplierSettings;

@@ -1,14 +1,14 @@
 import { Logo, LogoImage, LogoText } from "./logo";
 
-interface MenuItem {
+type MenuItem = {
   title: string;
   links: {
     text: string;
     url: string;
   }[];
-}
+};
 
-interface FooterProps {
+type FooterProps = {
   logo?: {
     url: string;
     src: string;
@@ -22,7 +22,7 @@ interface FooterProps {
     text: string;
     url: string;
   }[];
-}
+};
 
 const Footer = ({
   logo = {

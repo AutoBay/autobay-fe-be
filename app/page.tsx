@@ -2,7 +2,6 @@
 
 import { BarChart, Database, Layers, PieChart, SquareKanban } from "lucide-react";
 import { useState } from "react";
-import { BorderBeam } from "@/components/ui/border-beam";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MarqueeDemo } from "@/custom-components/Testimonials/Testimonials";

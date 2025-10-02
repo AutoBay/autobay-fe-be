@@ -5,7 +5,7 @@ const loginUser = async ({ email, password }: { email: string; password: string 
   try {
     const { user } = await signInWithEmailAndPassword(fireBaseClientAuth, email, password);
     if (user) {
-      console.log(user)
+      console.log(user);
       return user;
     }
   } catch (error) {

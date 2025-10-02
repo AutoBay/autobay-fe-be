@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { confirmPasswordReset, verifyPasswordResetCode } from "firebase/auth";
 // import router from "next/router";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -10,42 +10,29 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import ButtonWithLoading from "@/custom-components/button-with-loading-state/ButtonWithLoading";
+import { fireBaseClientAuth } from "@/lib/client/client-config";
 import { resetPasswordSchema } from "@/lib/client/schemas/reset-password-schema";
-import resetPw from "@/lib/client/services/reset-password";
 
 export default function ResetPasswordPage() {
+  const params = new URLSearchParams(window.location.search);
+  const actionCode = params.get("oobCode");
+
   const form = useForm<z.infer<typeof resetPasswordSchema>>({
     resolver: zodResolver(resetPasswordSchema),
     defaultValues: {
       email: "",
       password: "",
-      confirmPassword: "",
-    },
-  });
-
-  const { isPending, mutateAsync: resetPwMutation } = useMutation({
-    mutationFn: async (values: { email: string; password: string; }) => resetPw(values),
-    retry: false,
-    onSuccess: async () => {
-      // router.push("/login");
-    },
-    onError: (e) => {
-      console.error(e);
     },
   });
 
   async function onSubmit(values: z.infer<typeof resetPasswordSchema>) {
-    if (values.password !== values.confirmPassword) {
-      form.setError("confirmPassword", { message: "Passwords do not match" })
-    }
-
     try {
-      await resetPwMutation({ email: values.email, password: values.password });
-      console.log(values);
-      toast.success("Password reset email sent. Please check your inbox.");
+      await verifyPasswordResetCode(fireBaseClientAuth, actionCode || '');
+      await confirmPasswordReset(fireBaseClientAuth, actionCode || '', values.password);
+      toast.success("Password reset successfully. You can now log in with your new password.");
     } catch (error) {
-      console.error("Error sending password reset email", error);
-      toast.error("Failed to send password reset email. Please try again.");
+      console.error("Passwowrd reset failed:", error);
+      toast.error("Password reset failed. Please try again.");
     }
   }
 
@@ -75,20 +62,6 @@ export default function ResetPasswordPage() {
                   )}
                 />
 
-                {/* Confirm Password Field */}
-                <FormField
-                  control={form.control}
-                  name="confirmPassword"
-                  render={({ field }) => (
-                    <FormItem className="grid gap-2">
-                      <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-                      <FormControl>
-                        <Input autoComplete="new-password" id="confirmPassword" placeholder="******" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
                 <ButtonWithLoading className="w-full" loading={isPending} text="Reset Password" type="submit" />
               </div>
             </form>

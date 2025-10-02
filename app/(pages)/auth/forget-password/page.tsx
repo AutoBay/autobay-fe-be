@@ -35,10 +35,10 @@ export default function ForgetPasswordPage() {
     try {
       await forgetPwMutation(value.email);
       console.log(value);
-      toast.success("Password reset successful. You can now log in with your new password.");
+      toast.success("Password reset link sent! Check your email.");
     } catch (error) {
-      console.error("Error resetting password", error);
-      toast.error("Failed to reset the password. Please try again.");
+      console.error("Error sending password reset link:", error);
+      toast.error("Failed to send password reset link. Please try again.");
     }
   }
 
